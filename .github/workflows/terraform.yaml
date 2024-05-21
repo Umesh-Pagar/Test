@@ -10,7 +10,7 @@ jobs:
   terraform_plan:
     name: 'Terraform Plan'
     # if: ${{ github.event_name == 'pull_request' }}
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     defaults:
       run:
@@ -24,13 +24,13 @@ jobs:
       uses: hashicorp/setup-terraform@v1
 
     - name: Terraform Init
-      run: terraform init -backend-config=../environments/${{ github.base_ref }}/backend.json
+      run: terraform init -backend-config=../environments/main/backend.json
 
     - name: Terraform Validate
       run: terraform validate
 
     - name: Terraform Plan
-      run: terraform plan -var-file=../environments/${{ github.base_ref }}/${{ github.base_ref }}.tfvars -out=plan.tfplan
+      run: terraform plan -var-file=../environments/main/main.tfvars -out=plan.tfplan
 
     - name: Show Plan
       run: terraform show -no-color plan.tfplan > plan.txt
@@ -74,7 +74,7 @@ jobs:
       uses: hashicorp/setup-terraform@v1
 
     - name: Terraform Init
-      run: terraform init -backend-config=../environments/${{ github.base_ref }}/backend.json
+      run: terraform init -backend-config=../environments/main/backend.json
 
     - name: Download Terraform Plan
       uses: actions/download-artifact@v2
