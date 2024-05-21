@@ -30,7 +30,7 @@ jobs:
       run: terraform validate
 
     - name: Terraform Plan
-      run: terraform plan -var-file=../environments/${{ github.base_ref }}/env_name.tfvars -out=plan.tfplan
+      run: terraform plan -var-file=../environments/${{ github.base_ref }}/${{ github.base_ref }}.tfvars -out=plan.tfplan
 
     - name: Show Plan
       run: terraform show -no-color plan.tfplan > plan.txt
