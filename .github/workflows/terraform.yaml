@@ -1,11 +1,8 @@
 name: Terraform
 
+# trigger manually
 on:
-  push:
-    branches:
-    - main
-
-
+  workflow_dispatch:
 jobs:
   terraform_plan:
     name: 'Terraform Plan'
