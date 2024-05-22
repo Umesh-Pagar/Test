@@ -8,6 +8,10 @@ on:
 jobs:
   build:  # Add a job name here
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./wrapper
 
     steps:
      # Run a terraform plan
