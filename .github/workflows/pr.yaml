@@ -1,7 +1,6 @@
 name: Pull Request Main
 
-on:
-  workflow_dispatch: 
+on: 
   pull_request:
     branches:
       - 'main'

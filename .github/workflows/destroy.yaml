@@ -1,9 +1,7 @@
-name: Merge to Main branch
+name: Terraform Destroy
 
 on:
-  push:
-    branches:
-    - main
+  workflow_dispatch:
 
 jobs:
   build:  # Add a job name here
@@ -33,11 +31,11 @@ jobs:
         run: terraform init -backend-config="../environments/main/backend.json"
 
       # Run a terraform plan
-      - name: Terraform Apply
+      - name: Terraform Destroy
         id: apply
         env:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-        run: terraform apply -var-file="../environments/main/main.tfvars" -auto-approve
+        run: terraform destroy -var-file="../environments/main/main.tfvars" -auto-approve
