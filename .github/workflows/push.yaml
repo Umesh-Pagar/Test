@@ -55,7 +55,5 @@ jobs:
           path: .
           output: json
           output-path: kics-scan-results.json
-          query-path: queries
-          exclude-path: exclude
           log-level: info
 
