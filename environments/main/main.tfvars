@@ -12,4 +12,8 @@ subnets = [
     name           = "subnet2"
     address_prefix = "10.1.2.0/24"
   }
+  {
+    name           = "subnet3"
+    address_prefix = "10.1.3.0/24"
+  }
 ]
