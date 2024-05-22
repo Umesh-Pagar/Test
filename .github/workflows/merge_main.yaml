@@ -1,7 +1,6 @@
 name: Merge to Main branch
 
 on:
-  workflow_dispatch:
   push:
     branches:
     - main
