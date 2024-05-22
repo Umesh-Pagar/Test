@@ -3,7 +3,7 @@ name: Push to feature branch
 on:
   push:
     branches:
-    - '*'
+    - 'feat/*'
     - '!main'
 
 env:
