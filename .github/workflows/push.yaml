@@ -47,5 +47,13 @@ jobs:
         # Run even if formatting fails
         if: success() || failure()
         run: terraform validate -no-color
-      
+      # Run kics scan
+      - name: KICS Github Action
+        uses: Checkmarx/kics-github-action@v2.0.0
+        with:
+          path: .
+          output: json
+          output-path: kics-scan-results.json
+          ignore_on_exit: results
+          log-level: info
 
