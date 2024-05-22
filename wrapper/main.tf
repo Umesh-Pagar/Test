@@ -7,5 +7,5 @@ module "virtual_network" {
   dns_servers         = var.dns_servers
   subnets             = var.subnets
 
-    tags = local.tags
+  tags = local.tags
 }

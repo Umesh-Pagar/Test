@@ -1,5 +1,5 @@
 variable "resource_group_name" {
-  type = string
+  type        = string
   description = "The name of the resource group in which the resources will be created."
 }
 
@@ -16,13 +16,13 @@ variable "prefix" {
 variable "tags" {
   type        = map(any)
   description = "A mapping of tags to assign to the resource"
-  default = {}
+  default     = {}
 }
 
 variable "vnet_name" {
   type        = string
   description = "The name of the virtual network"
-  default = null
+  default     = null
 }
 
 variable "address_space" {
