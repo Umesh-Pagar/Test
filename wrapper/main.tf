@@ -17,12 +17,12 @@ resource "azurerm_user_assigned_identity" "acr_identity" {
 }
 
 resource "azurerm_container_registry" "acr" {
-  name                = "acractions${local.location}"
-  resource_group_name = local.resource_group_name
-  location            = local.location
-  sku                 = "Standard"
+  name                          = "acractions${local.location}"
+  resource_group_name           = local.resource_group_name
+  location                      = local.location
+  sku                           = "Standard"
   public_network_access_enabled = true
-  admin_enabled       = true
+  admin_enabled                 = true
   identity {
     type = "UserAssigned"
     identity_ids = [
@@ -39,16 +39,16 @@ resource "azurerm_user_assigned_identity" "aks_identity" {
 }
 
 resource "azurerm_kubernetes_cluster" "aks" {
-  name = "aks-${local.location}"
-  location = local.location
-  resource_group_name = local.resource_group_name
-  dns_prefix = "aks-${local.location}"
+  name                    = "aks-${local.location}"
+  location                = local.location
+  resource_group_name     = local.resource_group_name
+  dns_prefix              = "aks-${local.location}"
   private_cluster_enabled = false
 
   default_node_pool {
-    name = "default"
+    name       = "default"
     node_count = 1
-    vm_size = "Standard_DS2_v2"
+    vm_size    = "Standard_DS2_v2"
   }
 
   identity {
