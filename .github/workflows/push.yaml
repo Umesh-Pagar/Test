@@ -1,6 +1,7 @@
 name: Push to feature branch
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - '*'

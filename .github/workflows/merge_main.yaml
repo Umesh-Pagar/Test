@@ -1,6 +1,7 @@
 name: Merge to Main branch
 
 on:
+  workflow_dispatch:
   push:
     branches:
     - main
@@ -31,7 +32,7 @@ jobs:
           ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
           #terraform init -backend-config="..\environments\main\backend.json"   
         run: terraform init -backend-config="../environments/main/backend.json"
-        
+
       # Run a terraform plan
       - name: Terraform Apply
         id: apply
