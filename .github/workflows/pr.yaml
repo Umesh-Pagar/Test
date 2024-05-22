@@ -1,0 +1,51 @@
+name: Pull Request Main
+
+on:
+  pull_request:
+    branches:
+      - 'main'
+
+jobs:
+  check-code:
+    runs-on: ubuntu-latest
+    defaults:
+        run:
+          shell: bash
+          working-directory: ./wrapper
+    steps:
+      # Run a terraform plan
+      - name: Terraform Plan
+        id: plan
+        env:
+          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+        run: terraform plan -no-color
+
+      # Add a comment to pull requests with plan results
+      - name: Add Plan Comment
+        id: comment
+        uses: actions/github-script@v6
+        env:
+          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `#### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+        
+            Show Plan
+            
+            \`\`\`${process.env.PLAN}\`\`\`
+            
+            
+            
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Workflow: \`${{ github.workflow }}\`*`;
+              
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
