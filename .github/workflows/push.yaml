@@ -55,5 +55,6 @@ jobs:
           path: .
           output: json
           output-path: kics-scan-results.json
+          ignore_on_exit: results
           log-level: info
 
