@@ -43,7 +43,6 @@ resource "azurerm_kubernetes_cluster" "aks" {
   location = local.location
   resource_group_name = local.resource_group_name
   dns_prefix = "aks-${local.location}"
-  kubernetes_version = "1.19.7"
   private_cluster_enabled = false
 
   default_node_pool {
