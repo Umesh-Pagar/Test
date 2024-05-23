@@ -34,12 +34,12 @@ resource "azurerm_container_registry" "acr" {
 
 resource "azapi_update_resource" "enable_soft_delete" {
   resource_id = azurerm_container_registry.acr.id
-  type = "Microsoft.ContainerRegistry/registries"
+  type        = "Microsoft.ContainerRegistry/registries@2023-01-01-preview"
   body = jsonencode({
-    "properties": {
+    "properties" : {
       softDeletePolicy = {
         retentionDays = 7
-        status = "enabled"
+        status        = "enabled"
       }
     }
   })
