@@ -32,6 +32,18 @@ resource "azurerm_container_registry" "acr" {
   tags = local.tags
 }
 
+resource "null_resource" "acr_soft_delete" {
+  triggers = {
+    acr_id = azurerm_container_registry.acr.id
+  }
+
+  provisioner "local-exec" {
+    command = "az acr config soft-delete update -r ${azurerm_container_registry.acr.name} --days 7 --status enabled"
+  }
+
+  depends_on = [azurerm_container_registry.acr]
+}
+
 resource "azurerm_user_assigned_identity" "aks_identity" {
   resource_group_name = local.resource_group_name
   location            = local.location
