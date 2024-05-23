@@ -43,6 +43,7 @@ resource "azapi_update_resource" "enable_soft_delete" {
       }
     }
   })
+}
 
 resource "azurerm_user_assigned_identity" "aks_identity" {
   resource_group_name = local.resource_group_name
