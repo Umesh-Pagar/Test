@@ -32,16 +32,17 @@ resource "azurerm_container_registry" "acr" {
   tags = local.tags
 }
 
-resource "null_resource" "acr_soft_delete" {
-  triggers = {
-    acr_id = azurerm_container_registry.acr.id
-  }
-
-  provisioner "local-exec" {
-    command = "az acr config soft-delete update -r ${azurerm_container_registry.acr.name} --days 7 --status enabled"
-  }
-
-  depends_on = [azurerm_container_registry.acr]
+resource "azapi_update_resource" "enable_soft_delete" {
+  resource_id = azurerm_container_registry.acr.id
+  type        = "Microsoft.ContainerRegistry/registries@2023-01-01-preview"
+  body = jsonencode({
+    "properties" : {
+      softDeletePolicy = {
+        retentionDays = 7
+        status        = "enabled"
+      }
+    }
+  })
 }
 
 resource "azurerm_user_assigned_identity" "aks_identity" {
