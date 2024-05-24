@@ -43,3 +43,15 @@ variable "subnets" {
   }))
   description = "A list of subnets to create within the virtual network"
 }
+
+variable "soft_delete_retention_days" {
+  type        = number
+  description = "The number of days to retain soft deleted resources"
+  default     = 7
+}
+
+variable "soft_delete_enabled" {
+  type        = bool
+  description = "Whether or not to enable soft delete"
+  default     = true
+}
