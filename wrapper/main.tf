@@ -39,8 +39,8 @@ resource "azapi_update_resource" "enable_soft_delete" {
     properties = {
       policies = {
         softDeletePolicy = {
-          retentionDays = 7
-          status        = "enabled"
+          retentionDays = var.soft_delete_retention_days
+          status        = var.soft_delete_enabled
         }
       }
     }
