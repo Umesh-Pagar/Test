@@ -4,6 +4,8 @@ on:
   pull_request:
     branches:
       - 'main'
+      - 'dev'
+      - 'qa'
 
 jobs:
   check-code:
@@ -27,9 +29,8 @@ jobs:
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-          #terraform init -backend-config="..\environments\main\backend.json"   
-        run: terraform init -backend-config="../environments/main/backend.json"
+          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}   
+        run: terraform init -backend-config="../environments/global/backend.json"
         
       # Run a terraform plan
       - name: Terraform Plan
@@ -39,7 +40,8 @@ jobs:
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-        run: terraform plan -var-file="../environments/main/main.tfvars" -no-color
+        run: |
+          terraform plan -no-color
 
       # Add a comment to pull requests with plan results
       - name: Add Plan Comment
