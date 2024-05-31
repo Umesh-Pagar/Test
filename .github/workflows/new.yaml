@@ -148,7 +148,7 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: tfplan
-        path: ./wrapper/tfplan
+        path: ./wrapper/
 
     # Terraform Apply
     - name: Terraform Apply
