@@ -150,7 +150,6 @@ jobs:
         name: tfplan
         path: ./wrapper/tfplan
 
-
     # Terraform Apply
     - name: Terraform Apply
       run: terraform apply -auto-approve tfplan
