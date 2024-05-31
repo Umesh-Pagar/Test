@@ -40,7 +40,7 @@ resource "azapi_update_resource" "enable_soft_delete" {
       policies = {
         softDeletePolicy = {
           retentionDays = var.soft_delete_retention_days
-          status        = var.soft_delete_enabled
+          status        = var.soft_delete_enabled ? "Enabled" : "Disabled"
         }
       }
     }
@@ -72,7 +72,10 @@ resource "azurerm_kubernetes_cluster" "aks" {
       azurerm_user_assigned_identity.aks_identity.id
     ]
   }
+
+  tags = local.tags
 }
+
 
 resource "azurerm_role_assignment" "acr_pull" {
   scope                = azurerm_container_registry.acr.id

@@ -25,6 +25,14 @@ jobs:
       - name: HashiCorp - Setup Terraform
         uses: hashicorp/setup-terraform@v2.0.3
 
+      # - name: Configure Git 
+      #   run: |
+      #     echo "machine github.com login username password ${GH_TOKEN}" > ~/.netrc
+      #     git config --global url."https://github.com/ingenovishealth".insteadOf "git://github.com/ingenovishealth"
+      #     git config --global advice.detachedHead false
+      #   env:
+      #     GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
       # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
       - name: Terraform Init
         id: init
@@ -34,7 +42,7 @@ jobs:
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
           #terraform init -backend-config="..\environments\main\backend.json"   
-        run: terraform init -backend-config="../environments/main/backend.json"
+        run: terraform init -backend=false
 
       # Run a terraform fmt to check syntax
       - name: Terraform Format
