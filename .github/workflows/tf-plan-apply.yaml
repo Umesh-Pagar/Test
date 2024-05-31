@@ -1,137 +1,137 @@
-name: "Terraform Plan/Apply"
+# name: "Terraform Plan/Apply"
 
-on:
-  pull_request:
-    types: [opened, reopened, synchronize]
-  push:
-    branches:
-      - main
+# on:
+#   pull_request:
+#     types: [opened, reopened, synchronize]
+#   push:
+#     branches:
+#       - main
 
-#Special permissions required for OIDC authentication
-permissions:
-  id-token: write
-  contents: read
-  pull-requests: write
+# #Special permissions required for OIDC authentication
+# permissions:
+#   id-token: write
+#   contents: read
+#   pull-requests: write
 
-env:
-  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-  ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+# env:
+#   ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+#   ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+#   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+#   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
-jobs:
-  terraform-plan:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    defaults:
-        run:
-          shell: bash
-          working-directory: ./wrapper
-    steps:
-      # Checkout the repository to the GitHub Actions runner
-      - name: Checkout
-        uses: actions/checkout@v4.1.5
+# jobs:
+#   terraform-plan:
+#     if: github.event_name == 'pull_request'
+#     runs-on: ubuntu-latest
+#     defaults:
+#         run:
+#           shell: bash
+#           working-directory: ./wrapper
+#     steps:
+#       # Checkout the repository to the GitHub Actions runner
+#       - name: Checkout
+#         uses: actions/checkout@v4.1.5
 
-      - name: HashiCorp - Setup Terraform
-        uses: hashicorp/setup-terraform@v2.0.3
+#       - name: HashiCorp - Setup Terraform
+#         uses: hashicorp/setup-terraform@v2.0.3
 
-      # - name: Configure Git 
-      #   run: |
-      #     echo "machine github.com login username password ${GH_TOKEN}" > ~/.netrc
-      #     git config --global url."https://github.com/ingenovishealth".insteadOf "git://github.com/ingenovishealth"
-      #     git config --global advice.detachedHead false
-      #   env:
-      #     GH_TOKEN: ${{ secrets.GH_TOKEN }}
+#       # - name: Configure Git 
+#       #   run: |
+#       #     echo "machine github.com login username password ${GH_TOKEN}" > ~/.netrc
+#       #     git config --global url."https://github.com/ingenovishealth".insteadOf "git://github.com/ingenovishealth"
+#       #     git config --global advice.detachedHead false
+#       #   env:
+#       #     GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
-      # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
-      - name: Terraform Init
-        id: init
-          #terraform init -backend-config="..\environments\main\backend.json"   
-        run: terraform init -backend-config="../environments/global/backend.json"
+#       # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+#       - name: Terraform Init
+#         id: init
+#           #terraform init -backend-config="..\environments\main\backend.json"   
+#         run: terraform init -backend-config="../environments/global/backend.json"
         
-      # Run a terraform plan
-      - name: Terraform Plan
-        id: plan
-        run: terraform plan -var-file="../environments/global/global.tfvars" -out tfplan -no-color
+#       # Run a terraform plan
+#       - name: Terraform Plan
+#         id: plan
+#         run: terraform plan -var-file="../environments/global/global.tfvars" -out tfplan -no-color
 
-      - name: List files
-        run: ls -la
+#       - name: List files
+#         run: ls -la
 
-      # Save plan to artifacts  
-      - name: Publish Terraform Plan
-        uses: actions/upload-artifact@v4
-        with:
-        #working directory is ./wrapper and in that its saving the plan file tfplan
-          name: tfplan
-          path: ./wrapper/tfplan
-          overwrite: true
+#       # Save plan to artifacts  
+#       - name: Publish Terraform Plan
+#         uses: actions/upload-artifact@v4
+#         with:
+#         #working directory is ./wrapper and in that its saving the plan file tfplan
+#           name: tfplan
+#           path: ./wrapper/tfplan
+#           overwrite: true
 
-      # Add a comment to pull requests with plan results
-      - name: Add Plan Comment
-        id: comment
-        uses: actions/github-script@v6
-        env:
-          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
-        with:
-          github-token: ${{ secrets.TF_PLAN_COMMENT }}
-          script: |
-            const output = `#### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
-            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+#       # Add a comment to pull requests with plan results
+#       - name: Add Plan Comment
+#         id: comment
+#         uses: actions/github-script@v6
+#         env:
+#           PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+#         with:
+#           github-token: ${{ secrets.TF_PLAN_COMMENT }}
+#           script: |
+#             const output = `#### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+#             #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
         
-            Show Plan
+#             Show Plan
             
-            \`\`\`${process.env.PLAN}\`\`\`
+#             \`\`\`${process.env.PLAN}\`\`\`
             
             
             
-            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Workflow: \`${{ github.workflow }}\`*`;
+#             *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Workflow: \`${{ github.workflow }}\`*`;
               
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: output
-            })
+#             github.rest.issues.createComment({
+#               issue_number: context.issue.number,
+#               owner: context.repo.owner,
+#               repo: context.repo.repo,
+#               body: output
+#             })
   
-  terraform-apply:
-    if: github.event_name == 'push'
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-        working-directory: ./wrapper
+#   terraform-apply:
+#     if: github.event_name == 'push'
+#     runs-on: ubuntu-latest
+#     defaults:
+#       run:
+#         shell: bash
+#         working-directory: ./wrapper
 
-    needs: terraform-plan
+#     needs: terraform-plan
 
-    steps:
-      # Checkout the repository to the GitHub Actions runner
-      - name: Checkout
-        uses: actions/checkout@v4.1.5
+#     steps:
+#       # Checkout the repository to the GitHub Actions runner
+#       - name: Checkout
+#         uses: actions/checkout@v4.1.5
 
-      - name: HashiCorp - Setup Terraform
-        uses: hashicorp/setup-terraform@v2.0.3
+#       - name: HashiCorp - Setup Terraform
+#         uses: hashicorp/setup-terraform@v2.0.3
 
-      - name: Configure Git 
-        run: |
-          echo "machine github.com login username password ${GH_TOKEN}" > ~/.netrc
-          git config --global url."https://github.com/ingenovishealth".insteadOf "git://github.com/ingenovishealth"
-          git config --global advice.detachedHead false
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+#       - name: Configure Git 
+#         run: |
+#           echo "machine github.com login username password ${GH_TOKEN}" > ~/.netrc
+#           git config --global url."https://github.com/ingenovishealth".insteadOf "git://github.com/ingenovishealth"
+#           git config --global advice.detachedHead false
+#         env:
+#           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
-      # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
-      - name: Terraform Init
-        id: init
-          #terraform init -backend-config="..\environments\main\backend.json"   
-        run: terraform init -backend-config="../environments/global/backend.json"
+#       # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+#       - name: Terraform Init
+#         id: init
+#           #terraform init -backend-config="..\environments\main\backend.json"   
+#         run: terraform init -backend-config="../environments/global/backend.json"
 
-      # Download saved plan from artifacts  
-      - name: Download Terraform Plan
-        uses: actions/download-artifact@v4
-        with:
-          name: tfplan
+#       # Download saved plan from artifacts  
+#       - name: Download Terraform Plan
+#         uses: actions/download-artifact@v4
+#         with:
+#           name: tfplan
 
-      # Run a terraform plan
-      - name: Terraform Apply
-        id: apply
-        run: terraform apply tfplan -auto-approve
+#       # Run a terraform plan
+#       - name: Terraform Apply
+#         id: apply
+#         run: terraform apply tfplan -auto-approve
