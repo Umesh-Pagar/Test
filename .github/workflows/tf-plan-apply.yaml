@@ -54,12 +54,17 @@ jobs:
         id: plan
         run: terraform plan -var-file="../environments/global/global.tfvars" -out tfplan -no-color
 
+      - name: List files
+        run: ls -la
+
       # Save plan to artifacts  
       - name: Publish Terraform Plan
         uses: actions/upload-artifact@v4
         with:
+        #working directory is ./wrapper and in that its saving the plan file tfplan
           name: tfplan
-          path: tfplan
+          path: ./wrapper/tfplan
+          overwrite: true
 
       # Add a comment to pull requests with plan results
       - name: Add Plan Comment
