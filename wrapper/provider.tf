@@ -1,11 +1,19 @@
-provider "azurerm" {
-  features {
-    resource_group {}
+terraform {
+  required_providers {
+    azurerm = {
+      version = "3.98.0"
+    }
+
+    azapi = {
+      source = "Azure/azapi"
+    }
   }
 }
 
-provider "azuread" {
+provider "azurerm" {
+  features {}
 }
 
 provider "azapi" {
+
 }
