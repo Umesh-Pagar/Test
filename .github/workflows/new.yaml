@@ -48,7 +48,8 @@ jobs:
 
     - name: List files
       run: ls -la
-
+    - name: List results directory
+      run: ls -la ./results-dir
 
     - name: Upload SARIF file
       if: always()
