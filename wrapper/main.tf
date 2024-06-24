@@ -76,6 +76,21 @@ resource "azurerm_kubernetes_cluster" "aks" {
   tags = local.tags
 }
 
+resource "azurerm_kubernetes_cluster_extension" "extensions" {
+  name = "flux"
+  cluster_id = azurerm_kubernetes_cluster.aks.id
+  extension_type = "microsoft.flux"
+
+  configuration_settings = {
+    "helm-controller.enabled" : "true"
+    "source-controller.enabled" : "true"
+    "kustomize-controller.enabled" : "true"
+    "notification-controller.enabled" : "true"
+    "image-automation-controller.enabled" : "true"
+    "image-reflector-controller.enabled" : "true"
+  }
+}
+
 
 resource "azurerm_role_assignment" "acr_pull" {
   scope                = azurerm_container_registry.acr.id
