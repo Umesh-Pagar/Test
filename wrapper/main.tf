@@ -51,5 +51,5 @@ resource "azurerm_search_service" "srch" {
   name                = "srch-${local.location}"
   resource_group_name = local.resource_group_name
   location            = local.location
-  sku                 = "standard"
+  sku                 = "Free"
 }
