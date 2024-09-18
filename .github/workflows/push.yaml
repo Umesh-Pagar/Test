@@ -86,7 +86,7 @@ jobs:
 
           echo $uri
 
-          echo "uri=https://management.azure.com${rid}?api-version=2024-03-01-Preview" >> $GITHUB_ENV
+          echo "https://management.azure.com${rid}?api-version=2024-03-01-Preview"
           
           # az rest --uri "$uri" > search.json
           # jq '.properties.networkRuleSet.bypass = "AzureServices"' search.json > search_updated.json
