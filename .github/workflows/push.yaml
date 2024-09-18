@@ -48,17 +48,23 @@ jobs:
 
       # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
       - name: Terraform Init
+        env:
+          ARM_USE_OIDC: true
         id: init
           #terraform init -backend-config="..\environments\main\backend.json"   
         run: terraform init -backend-config="../environments/prod/backend.json"
 
       # Run a terraform plan
       - name: Terraform Plan
+        env:
+          ARM_USE_OIDC: true
         id: plan
         run: terraform plan -var-file="../environments/prod/prod.tfvars" -out tfplan -no-color
 
       # Run a terraform plan
       - name: Terraform Apply
+        env:
+          ARM_USE_OIDC: true
         id: apply
         run: terraform apply -var-file="../environments/prod/prod.tfvars" -auto-approve
 
