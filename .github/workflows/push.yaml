@@ -73,6 +73,8 @@ jobs:
         run: terraform apply -var-file="../environments/prod/prod.tfvars" -auto-approve
 
       - name: Get search service ID
+        env:
+          ARM_USE_OIDC: true
         id: get_id
         run: |
           terraform output -json search_service_id
