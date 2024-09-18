@@ -82,7 +82,7 @@ jobs:
         id: get_id
         run: |
           rid=$(terraform output -json search_service_id)
-          echo $rid
+          az rest --uri "https://management.azure.com$rid?api-version=2024-03-01-Preview" > search.json
 
       - name: Update bypass property
         run: jq '.properties.networkRuleSet.bypass = "AzureServices"' search.json > search_updated.json
