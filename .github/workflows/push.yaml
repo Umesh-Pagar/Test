@@ -6,6 +6,12 @@ on:
     - 'f-*'
     - 'main'
 
+#Special permissions required for OIDC authentication
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
 env:
   TF_LOG: INFO
   TF_INPUT: false
