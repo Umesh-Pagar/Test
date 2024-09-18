@@ -81,6 +81,5 @@ jobs:
           ARM_USE_OIDC: true
         id: get_id
         run: |
-          rid=$(terraform output -raw search_service_id)
-          echo "The search service ID is: $rid"
+          terraform output -raw search_service_id
       
