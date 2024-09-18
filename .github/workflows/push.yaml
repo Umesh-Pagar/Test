@@ -63,18 +63,18 @@ jobs:
         run: terraform init -backend-config="../environments/prod/backend.json"
 
       # Run a terraform plan
-      - name: Terraform Plan
-        env:
-          ARM_USE_OIDC: true
-        id: plan
-        run: terraform plan -var-file="../environments/prod/prod.tfvars" -out tfplan -no-color
+      # - name: Terraform Plan
+      #   env:
+      #     ARM_USE_OIDC: true
+      #   id: plan
+      #   run: terraform plan -var-file="../environments/prod/prod.tfvars" -out tfplan -no-color
 
-      # Run a terraform plan
-      - name: Terraform Apply
-        env:
-          ARM_USE_OIDC: true
-        id: apply
-        run: terraform apply -var-file="../environments/prod/prod.tfvars" -auto-approve
+      # # Run a terraform plan
+      # - name: Terraform Apply
+      #   env:
+      #     ARM_USE_OIDC: true
+      #   id: apply
+      #   run: terraform apply -var-file="../environments/prod/prod.tfvars" -auto-approve
 
       - name: Get search service ID
         env:
@@ -83,9 +83,11 @@ jobs:
         run: |
           rid=$(terraform output -raw search_service_id)
           uri="https://management.azure.com${rid}?api-version=2024-03-01-Preview"
+
+          echo $uri
           
-          az rest --uri "$uri" > search.json
-          jq '.properties.networkRuleSet.bypass = "AzureServices"' search.json > search_updated.json
-          az rest --uri "$uri" \
-            --method PUT \
-            --body @search_updated.json      
+          # az rest --uri "$uri" > search.json
+          # jq '.properties.networkRuleSet.bypass = "AzureServices"' search.json > search_updated.json
+          # az rest --uri "$uri" \
+          #   --method PUT \
+          #   --body @search_updated.json      
