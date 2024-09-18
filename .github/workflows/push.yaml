@@ -36,32 +36,20 @@ jobs:
       # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
       - name: Terraform Init
         id: init
-        env:
-          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
           #terraform init -backend-config="..\environments\main\backend.json"   
-        run: terraform init -backend=false
+        run: terraform init -backend-config="../environments/prod/backend.json"
 
-      # Run a terraform fmt to check syntax
-      - name: Terraform Format
-        id: fmt
-        run: terraform fmt -check
+      # Run a terraform plan
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -var-file="../environments/prod/prod.tfvars" -out tfplan -no-color
 
-      # Run a terraform validate
-      - name: Terraform Validate
-        id: validate
-        # Run even if formatting fails
-        if: success() || failure()
-        run: terraform validate -no-color
-      # Run kics scan
-      - name: KICS Github Action
-        uses: Checkmarx/kics-github-action@v2.0.0
-        with:
-          path: .
-          output: json
-          output-path: kics-scan-results.json
-          ignore_on_exit: results
-          log-level: info
+      # Run a terraform plan
+      - name: Terraform Apply
+        id: apply
+        run: terraform apply -var-file="../environments/prod/prod.tfvars" -auto-approve
 
+
+  
+
+      
