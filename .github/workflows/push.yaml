@@ -78,7 +78,7 @@ jobs:
         id: get_id
         run: |
           rid=$(terraform output -json search_service_id)
-          acho $rid
+          echo $rid
           az rest --uri "https://management.azure.com${rid}?api-version=2024-03-01-Preview" > search.json
 
       - name: Update bypass property
