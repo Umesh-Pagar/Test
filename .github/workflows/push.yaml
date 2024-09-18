@@ -81,8 +81,9 @@ jobs:
           ARM_USE_OIDC: true
         id: get_id
         run: |
-          az rest --uri "https://management.azure.com$(terraform output -raw search_service_id)?api-version=2024-03-01-Preview" > search.json
+          rid=$(terraform output -raw search_service_id)
+          az rest --uri "https://management.azure.com${rid}?api-version=2024-03-01-Preview" > search.json
           jq '.properties.networkRuleSet.bypass = "AzureServices"' search.json > search_updated.json
-          az rest --uri "https://management.azure.com$(terraform output -raw search_service_id)?api-version=2024-03-01-Preview" \
+          az rest --uri "https://management.azure.com${rid}?api-version=2024-03-01-Preview" \
             --method PUT \
-            --body @search_updated.json          
+            --body @search_updated.json       
