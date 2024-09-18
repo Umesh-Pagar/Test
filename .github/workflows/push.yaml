@@ -82,12 +82,5 @@ jobs:
         id: get_id
         run: |
           rid=$(terraform output -raw search_service_id)
-          uri="https://management.azure.com${rid}?api-version=2024-03-01-Preview"
-
-          echo $uri
-          
-          # az rest --uri "$uri" > search.json
-          # jq '.properties.networkRuleSet.bypass = "AzureServices"' search.json > search_updated.json
-          # az rest --uri "$uri" \
-          #   --method PUT \
-          #   --body @search_updated.json      
+          echo "The search service ID is: $rid"
+      

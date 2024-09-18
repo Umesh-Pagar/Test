@@ -17,4 +17,12 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-    
+              # uri="https://management.azure.com${rid}?api-version=2024-03-01-Preview"
+
+          # echo $uri
+          
+          # az rest --uri "$uri" > search.json
+          # jq '.properties.networkRuleSet.bypass = "AzureServices"' search.json > search_updated.json
+          # az rest --uri "$uri" \
+          #   --method PUT \
+          #   --body @search_updated.json
