@@ -5,7 +5,7 @@ on:
     branches:
     - 'f-*'
     - 'main'
-    
+
 #Special permissions required for OIDC authentication
 permissions:
   id-token: write
@@ -75,22 +75,17 @@ jobs:
       - name: Get search service ID
         id: get_id
         run: |
+          terraform output -json search_service_id
           echo "search_service_id=$(terraform output -json search_service_id | jq -r .)" >> $GITHUB_ENV
-      
+
       - name: Store resource properties
-        run: az rest --uri "https://management.azure.com$rid?api-version=2024-03-01-Preview" > search.json
+        run: az rest --uri "https://management.azure.com${rid}?api-version=2024-03-01-Preview" > search.json
 
       - name: Update bypass property
         run: jq '.properties.networkRuleSet.bypass = "AzureServices"' search.json > search_updated.json
 
       - name: Apply updated properties
         run: |
-          az rest --uri "https://management.azure.com$rid?api-version=2024-03-01-Preview" \
+          az rest --uri "https://management.azure.com${rid}?api-version=2024-03-01-Preview" \
             --method PUT \
             --body @search_updated.json
-      
-
-
-  
-
-      
