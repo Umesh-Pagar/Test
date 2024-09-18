@@ -6,6 +6,10 @@ on:
     - 'f-*'
     - 'main'
 
+env:
+  TF_LOG: INFO
+  TF_INPUT: false
+
 #Special permissions required for OIDC authentication
 permissions:
   id-token: write
@@ -78,7 +82,7 @@ jobs:
         id: get_id
         run: |
           terraform output -json search_service_id
-          rid=$(terraform output -json search_service_id)
+          rid=terraform output -json search_service_id
           echo $rid
           az rest --uri "https://management.azure.com$rid?api-version=2024-03-01-Preview" > search.json
 
