@@ -82,18 +82,8 @@ jobs:
         id: get_id
         run: |
           rid=$(terraform output -raw search_service_id)
-          echo "rid=$rid" >> $GITHUB_ENV
-
-      - name: Store resource properties
-        run: az rest --uri "https://management.azure.com${{ env.rid }}?api-version=2024-03-01-Preview" > search.json
-
-      - name: Update bypass property
-        run: jq '.properties.networkRuleSet.bypass = "AzureServices"' search.json > search_updated.json
-
-      - name: Apply updated properties
-        run: |
+          az rest --uri "https://management.azure.com$rid?api-version=2024-03-01-Preview" > search.json
+          jq '.properties.networkRuleSet.bypass = "AzureServices"' search.json > search_updated.json
           az rest --uri "https://management.azure.com${{ env.rid }}?api-version=2024-03-01-Preview" \
             --method PUT \
-            --body @search_updated.json
-
-            
+            --body @search_updated.json          
