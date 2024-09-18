@@ -32,20 +32,20 @@ resource "azurerm_container_registry" "acr" {
   tags = local.tags
 }
 
-resource "azapi_update_resource" "enable_soft_delete" {
-  resource_id = azurerm_container_registry.acr.id
-  type        = "Microsoft.ContainerRegistry/registries@2023-01-01-preview"
-  body = jsonencode({
-    properties = {
-      policies = {
-        softDeletePolicy = {
-          retentionDays = var.soft_delete_retention_days
-          status        = var.soft_delete_enabled ? "Enabled" : "Disabled"
-        }
-      }
-    }
-  })
-}
+# resource "azapi_update_resource" "enable_soft_delete" {
+#   resource_id = azurerm_container_registry.acr.id
+#   type        = "Microsoft.ContainerRegistry/registries@2023-01-01-preview"
+#   body = jsonencode({
+#     properties = {
+#       policies = {
+#         softDeletePolicy = {
+#           retentionDays = var.soft_delete_retention_days
+#           status        = var.soft_delete_enabled ? "Enabled" : "Disabled"
+#         }
+#       }
+#     }
+#   })
+# }
 
 resource "azurerm_search_service" "srch" {
   name                = "srch-${local.location}"
