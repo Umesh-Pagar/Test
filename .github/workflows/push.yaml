@@ -12,10 +12,6 @@ permissions:
   contents: read
   pull-requests: write
 
-env:
-  TF_LOG: INFO
-  TF_INPUT: false
-
 jobs: 
   check-code:
     runs-on: ubuntu-latest
