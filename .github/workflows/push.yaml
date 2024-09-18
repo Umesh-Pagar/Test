@@ -81,7 +81,7 @@ jobs:
           ARM_USE_OIDC: true
         id: get_id
         run: |
-          rid=terraform output -json search_service_id
+          rid=$(terraform output -json search_service_id | jq -r '.value')
           echo $rid
 
       - name: Update bypass property
