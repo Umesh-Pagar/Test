@@ -77,7 +77,7 @@ jobs:
           ARM_USE_OIDC: true
         id: get_id
         run: |
-          rid=terraform output -json search_service_id
+          rid=$(terraform output -json search_service_id)
           az rest --uri "https://management.azure.com${rid}?api-version=2024-03-01-Preview" > search.json
 
       - name: Update bypass property
