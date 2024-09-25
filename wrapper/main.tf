@@ -10,27 +10,27 @@ module "virtual_network" {
   tags = local.tags
 }
 
-resource "azurerm_user_assigned_identity" "acr_identity" {
-  resource_group_name = local.resource_group_name
-  location            = local.location
-  name                = "acr-identity"
-}
+# resource "azurerm_user_assigned_identity" "acr_identity" {
+#   resource_group_name = local.resource_group_name
+#   location            = local.location
+#   name                = "acr-identity"
+# }
 
-resource "azurerm_container_registry" "acr" {
-  name                          = "acractions${local.location}"
-  resource_group_name           = local.resource_group_name
-  location                      = local.location
-  sku                           = "Standard"
-  public_network_access_enabled = true
-  admin_enabled                 = true
-  identity {
-    type = "UserAssigned"
-    identity_ids = [
-      azurerm_user_assigned_identity.acr_identity.id
-    ]
-  }
-  tags = local.tags
-}
+# resource "azurerm_container_registry" "acr" {
+#   name                          = "acractions${local.location}"
+#   resource_group_name           = local.resource_group_name
+#   location                      = local.location
+#   sku                           = "Standard"
+#   public_network_access_enabled = true
+#   admin_enabled                 = true
+#   identity {
+#     type = "UserAssigned"
+#     identity_ids = [
+#       azurerm_user_assigned_identity.acr_identity.id
+#     ]
+#   }
+#   tags = local.tags
+# }
 
 # resource "azapi_update_resource" "enable_soft_delete" {
 #   resource_id = azurerm_container_registry.acr.id
