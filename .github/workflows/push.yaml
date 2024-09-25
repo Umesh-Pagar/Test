@@ -78,11 +78,12 @@ jobs:
 
       - name: Set execute permission for search.ps1
         run: chmod +x ./scripts/search.ps1
-        
+
       - name: Get search service ID
         env:
           ARM_USE_OIDC: true
         id: get_id
+        shell: pwsh
         run: |
           rid=$(terraform output -raw search_service_id)
           ./scripts/search.ps1 -rid $rid
