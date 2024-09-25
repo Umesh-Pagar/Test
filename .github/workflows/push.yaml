@@ -63,18 +63,18 @@ jobs:
         run: terraform init -backend-config="../environments/prod/backend.json"
 
       # Run a terraform plan
-      # - name: Terraform Plan
-      #   env:
-      #     ARM_USE_OIDC: true
-      #   id: plan
-      #   run: terraform plan -var-file="../environments/prod/prod.tfvars" -out tfplan -no-color
+      - name: Terraform Plan
+        env:
+          ARM_USE_OIDC: true
+        id: plan
+        run: terraform plan -var-file="../environments/prod/prod.tfvars" -out tfplan -no-color
 
       # # Run a terraform plan
-      # - name: Terraform Apply
-      #   env:
-      #     ARM_USE_OIDC: true
-      #   id: apply
-      #   run: terraform apply -var-file="../environments/prod/prod.tfvars" -auto-approve
+      - name: Terraform Apply
+        env:
+          ARM_USE_OIDC: true
+        id: apply
+        run: terraform apply -var-file="../environments/prod/prod.tfvars" -auto-approve
 
       - name: Get search service ID
         env:
