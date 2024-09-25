@@ -85,5 +85,5 @@ jobs:
         id: get_id
         shell: pwsh
         run: |
-          rid=$(terraform output -raw search_service_id)
+          $rid = terraform output -raw search_service_id
           ./scripts/search.ps1 -rid $rid
