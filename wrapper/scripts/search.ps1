@@ -12,9 +12,16 @@ param(
 
 
 # Construct the URI
-$uri = "https://management.azure.com/subscriptions/$subid/resourceGroups/$rg/providers/Microsoft.Search/searchServices/$name?api-version=2024-03-01-Preview"
+$uri = "https://management.azure.com/subscriptions/$subid/resourceGroups/$rg/providers/Microsoft.Search/searchServices/$name"
 
 Write-Output "Constructed URI: $uri"
+
+
+# join this to uri "?api-version=2024-03-01-Preview"
+$uri = $uri + "?api-version=2024-03-01-Preview"
+
+Write-Output "Constructed URI with API version: $uri"
+
 # Use Azure CLI to get the resource details and save to search.json
 az rest --uri $uri > search.json
 
