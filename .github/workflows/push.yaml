@@ -82,4 +82,4 @@ jobs:
         id: get_id
         run: |
           rid=$(terraform output -raw search_service_id)
-          ./wrapper/search.ps1 -rid $rid
+          ./wrapper/scripts/search.ps1 -rid $rid
