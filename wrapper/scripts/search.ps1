@@ -1,10 +1,12 @@
 param(
-    [Parameter(Mandatory=$true)]
-    [string]$subid
+  [Parameter(Mandatory=$true)]
+  [string]$subid,
 
-    [string]$rg
+  [Parameter(Mandatory=$true)]
+  [string]$rg,
 
-    [string]$name
+  [Parameter(Mandatory=$true)]
+  [string]$name
 )
 
 
