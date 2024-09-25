@@ -31,4 +31,5 @@ jq '.properties.networkRuleSet.bypass = "AzureServices"' search.json > search_up
 # Use Azure CLI to update the resource with the modified JSON
 az rest --uri $uri `
   --method PUT `
+  --header "Content-Type=application/json" `
   --body search_updated.json
