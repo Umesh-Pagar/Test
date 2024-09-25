@@ -1,0 +1,35 @@
+{
+  "id": "/subscriptions/99302e3f-544c-4cb1-8705-81e5c0c3a231/resourceGroups/RG-UmeshPagar/providers/Microsoft.Search/searchServices/srch-eastus",
+  "location": "East US",
+  "name": "srch-eastus",
+  "properties": {
+    "authOptions": {
+      "apiKeyOnly": {}
+    },
+    "disableLocalAuth": false,
+    "disabledDataExfiltrationOptions": [],
+    "encryptionWithCmk": {
+      "encryptionComplianceStatus": "Compliant",
+      "enforcement": "Disabled"
+    },
+    "hostingMode": "default",
+    "networkRuleSet": {
+      "bypass": "None",
+      "ipRules": []
+    },
+    "partitionCount": 1,
+    "privateEndpointConnections": [],
+    "provisioningState": "succeeded",
+    "publicNetworkAccess": "Disabled",
+    "replicaCount": 1,
+    "semanticSearch": "disabled",
+    "sharedPrivateLinkResources": [],
+    "status": "running",
+    "statusDetails": ""
+  },
+  "sku": {
+    "name": "standard"
+  },
+  "tags": {},
+  "type": "Microsoft.Search/searchServices"
+}
