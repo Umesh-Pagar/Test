@@ -2,9 +2,9 @@ param(
     [Parameter(Mandatory=$true)]
     [string]$subid
 
-    [string]rg
+    [string]$rg
 
-    [string]name
+    [string]$name
 )
 
 
