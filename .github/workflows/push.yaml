@@ -85,4 +85,6 @@ jobs:
         id: get_id
         shell: pwsh
         run: |
+          $name = terraform output -json search_service_name
+          $rg = terraform output -json resource_group_name
           ./scripts/search.ps1 -subid "${{ secrets.AZURE_SUBSCRIPTION_ID }}" -rg "RG-UmeshPagar" -name "srch-eastus"
