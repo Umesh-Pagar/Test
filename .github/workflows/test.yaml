@@ -15,7 +15,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     environment:
-      name: if [[ "${GITHUB_REF_NAME}" == "main" ]]; then echo 'production'; else echo 'dev'; fi
+      name: 'production'
         
     steps:
     - name: 'Az CLI login'
