@@ -13,8 +13,25 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: ${{ github.ref_name == 'main' && 'production' || 'dev' }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./wrapper
+    env:
+      #this is needed since we are running terraform with read-only permissions
+      ARM_SKIP_PROVIDER_REGISTRATION: true
         
     steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    # Install the latest version of the Terraform CLI
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@633666f66e0061ca3b725c73b2ec20cd13a8fdd1
+      with:
+        terraform_wrapper: false
+
     - name: 'Az CLI login'
       uses: azure/login@v1
       with:
@@ -22,8 +39,14 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-    - name: 'Run Azure CLI'
-      run: az account show
+    - name: Terraform Init
+      env:
+        ARM_USE_OIDC: true
+      run: terraform init -backend-config="../environments/prod/backend.json"
 
-    - name: 'Print the client-id'
-      run: echo ${{ secrets.AZURE_CLIENT_ID }}
+    # Run a terraform plan
+    - name: Terraform Plan
+      env:
+        ARM_USE_OIDC: true
+      run: terraform plan -var-file="../environments/prod/prod.tfvars" -out tfplan -no-color
+
