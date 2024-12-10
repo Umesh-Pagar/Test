@@ -1,6 +1,6 @@
 {
     "resource_group_name": "RG-UmeshPagar",
-    "storage_account_name": "stgtesteastus01",
-    "container_name": "terraform-state",
+    "storage_account_name": "stgtestdev01",
+    "container_name": "terraform",
     "key": "terraform-dev.tfstate"
 }
