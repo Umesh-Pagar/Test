@@ -12,7 +12,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     environment:
-      name: ${{ github.ref_name == 'main' && 'Production' || 'dev' }}
+      name: ${{ github.ref_name == 'main' && 'production' || 'dev' }}
         
     steps:
     - name: 'Az CLI login'
