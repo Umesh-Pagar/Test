@@ -98,15 +98,11 @@ jobs:
         github-token: ${{ secrets.IAC_PLATFORM_PAT_SECRET }}
         script: |
           const planLength = parseInt(process.env.PLAN_LENGTH, 10);
-          const maxCommentLength = 65; // GitHub comment length limit
+          const maxCommentLength = 3000; // GitHub comment length limit
           let body;
 
           if (planLength > maxCommentLength) {
-            body = `
-              ## Terraform Plan Output
-              The plan is too long to display here. Please download the artifact to view the full plan.
-              **[View full plan artifact](${{ steps.upload-text-plan.outputs.artifact-url }})**
-            `;
+            const body = `Terraform plan URL: ${{ steps.upload-text-plan.outputs.artifact-url }}`;
           } else {
             body = `${process.env.SUMMARY}`;
           }
