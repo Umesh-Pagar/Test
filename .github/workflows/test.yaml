@@ -100,11 +100,10 @@ jobs:
           let body;
 
           if (planLength > maxCommentLength) {
-            const artifactUrl = ${{ steps.upload-text-plan.outputs.artifact-url }};
             body = `
               ## Terraform Plan Output
               The plan is too long to display here. Please download the artifact to view the full plan.
-              **[View full plan artifact](${artifactUrl})**
+              **[View full plan artifact](${{ steps.upload-text-plan.outputs.artifact-url }})**
             `;
           } else {
             body = `${process.env.SUMMARY}`;
