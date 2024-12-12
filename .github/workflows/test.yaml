@@ -93,27 +93,27 @@ jobs:
         SUMMARY: "${{ steps.tf-plan-string.outputs.summary }}"
         PLAN_LENGTH: ${{ env.plan_length }}
       with:
-          github-token: ${{ secrets.IAC_PLATFORM_PAT_SECRET }}
-          script: |
-            const planLength = parseInt(process.env.PLAN_LENGTH, 10);
-            const maxCommentLength = 65; // GitHub comment length limit
-            let body;
+        github-token: ${{ secrets.IAC_PLATFORM_PAT_SECRET }}
+        script: |
+          const planLength = parseInt(process.env.PLAN_LENGTH, 10);
+          const maxCommentLength = 65; // GitHub comment length limit
+          let body;
 
-            if (planLength > maxCommentLength) {
-              const artifactUrl = ${{ steps.upload-text-plan.outputs.artifact-url }};
-              body = `
-                ## Terraform Plan Output
-                The plan is too long to display here. Please download the artifact to view the full plan.
-                **[View full plan artifact](${artifactUrl})**
-              `;
-            } else {
-              body = `${process.env.SUMMARY}`;
-            }
+          if (planLength > maxCommentLength) {
+            const artifactUrl = ${{ steps.upload-text-plan.outputs.artifact-url }};
+            body = `
+              ## Terraform Plan Output
+              The plan is too long to display here. Please download the artifact to view the full plan.
+              **[View full plan artifact](${artifactUrl})**
+            `;
+          } else {
+            body = `${process.env.SUMMARY}`;
+          }
 
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: body
-            });
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: body
+          });
 
