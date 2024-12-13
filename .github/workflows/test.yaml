@@ -98,8 +98,7 @@ jobs:
         github-token: ${{ secrets.IAC_PLATFORM_PAT_SECRET }}
         script: |
           const planLength = parseInt(process.env.PLAN_LENGTH, 10);
-          const maxCommentLength = 500; // GitHub comment length limit
-          let body;
+          const maxCommentLength = 65536; // GitHub comment length limit
 
           if (planLength > maxCommentLength) {
             const body = `Terraform plan URL: ${{ steps.upload-text-plan.outputs.artifact-url }}`;
