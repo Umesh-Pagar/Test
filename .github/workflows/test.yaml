@@ -98,11 +98,11 @@ jobs:
         github-token: ${{ secrets.IAC_PLATFORM_PAT_SECRET }}
         script: |
           const planLength = parseInt(process.env.PLAN_LENGTH, 10);
-          const maxCommentLength = 1000; // GitHub comment length limit
+          const maxCommentLength = 60000; // GitHub comment length limit
           let body;
 
           if (planLength > maxCommentLength) {
-            const body = `Terraform plan URL: ${{ steps.upload-text-plan.outputs.artifact-url }}`;
+            body = `Terraform plan URL: ${{ steps.upload-text-plan.outputs.artifact-url }}`;
           } else {
             body = `${process.env.SUMMARY}`;
           }
