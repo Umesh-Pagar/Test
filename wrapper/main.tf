@@ -11,7 +11,8 @@ module "virtual_network" {
 }
 
 resource "azurerm_search_service" "srch" {
-  name                = "srch-${local.location}"
+  count = 10000
+  name                = "srch-${local.location}-${count.index}"
   resource_group_name = local.resource_group_name
   location            = local.location
   public_network_access_enabled = false
